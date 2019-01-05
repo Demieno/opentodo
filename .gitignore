@@ -1,3 +1,4 @@
-local_settings.py
-Thumbs.db
-*.pyc
+# do NOT track Python compilation files
+*.py[cod]
+__python__/*
+opentodo.db
