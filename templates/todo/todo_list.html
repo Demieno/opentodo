@@ -18,13 +18,13 @@
 
 <div id="leftmenu">
 	<div{% ifequal folder 'inbox' %} class="selected"{% endifequal %}>
-		<a href="{% url tasks_list %}?folder=inbox">Входящие</a>
+		<a href="{% url 'tasks_list' %}?folder=inbox">Входящие</a>
 	</div>
 	<div{% ifequal folder 'outbox' %} class="selected"{% endifequal %}>
-		<a href="{% url tasks_list %}?folder=outbox">Исходящие</a>
+		<a href="{% url 'tasks_list' %}?folder=outbox">Исходящие</a>
 	</div>
 	<div{% ifequal folder 'all' %} class="selected"{% endifequal %}>
-		<a href="{% url tasks_list %}?folder=all">Все</a>
+		<a href="{% url 'tasks_list' %}?folder=all">Все</a>
 	</div>
 </div>
 
@@ -86,27 +86,27 @@ $(document).ready(function(){
 	</div>
 
 	<div style="float:right; text-align:right; margin-bottom:20px;">
-	<a class="button" href="{% url add_task %}" style="color:#333"><span>Добавить задачу</span></a>
+	<a class="button" href="{% url 'add_task' %}" style="color:#333"><span>Добавить задачу</span></a>
 	</div>
 </div>
 
 <table class="common" style="clear:both;" cellspacing="0" cellpadding="0" width="100%">
 	<tr>
-		<th class="left{% ifequal order 'task'%} active{% endifequal %}" width="100%"><a href="{% url tasks_list %}?order=task&dir={% ifequal order 'task'%}{% ifequal dir 'asc'%}desc{% else %}asc{% endifequal%}{% else %}asc{% endifequal%}">Задача{% ifequal order 'task'%}{% ifequal dir 'asc'%}&uarr;{% else %}&darr;{% endifequal%}{% endifequal%}</a></th>
+		<th class="left{% ifequal order 'task'%} active{% endifequal %}" width="100%"><a href="{% url 'tasks_list' %}?order=task&dir={% ifequal order 'task'%}{% ifequal dir 'asc'%}desc{% else %}asc{% endifequal%}{% else %}asc{% endifequal%}">Задача{% ifequal order 'task'%}{% ifequal dir 'asc'%}&uarr;{% else %}&darr;{% endifequal%}{% endifequal%}</a></th>
 
 		{% if not project %}
-		<th{% ifequal order 'project'%} class="active"{% endifequal %}><a href="{% url tasks_list %}?order=project&dir={% ifequal order 'project'%}{% ifequal dir 'asc'%}desc{% else %}asc{% endifequal%}{% else %}asc{% endifequal%}">Проект{% ifequal order 'project'%}{% ifequal dir 'asc'%}&uarr;{% else %}&darr;{% endifequal%}{% endifequal%}</a></th>
+		<th{% ifequal order 'project'%} class="active"{% endifequal %}><a href="{% url 'tasks_list' %}?order=project&dir={% ifequal order 'project'%}{% ifequal dir 'asc'%}desc{% else %}asc{% endifequal%}{% else %}asc{% endifequal%}">Проект{% ifequal order 'project'%}{% ifequal dir 'asc'%}&uarr;{% else %}&darr;{% endifequal%}{% endifequal%}</a></th>
 		{% endif %}
 		
-		<th{% ifequal order 'author'%} class="active"{% endifequal %}><a href="{% url tasks_list %}?order=author&dir={% ifequal order 'author'%}{% ifequal dir 'asc'%}desc{% else %}asc{% endifequal%}{% else %}asc{% endifequal%}">Назначил{% ifequal order 'author'%}{% ifequal dir 'asc'%}&uarr;{% else %}&darr;{% endifequal%}{% endifequal%}</a></th>
+		<th{% ifequal order 'author'%} class="active"{% endifequal %}><a href="{% url 'tasks_list' %}?order=author&dir={% ifequal order 'author'%}{% ifequal dir 'asc'%}desc{% else %}asc{% endifequal%}{% else %}asc{% endifequal%}">Назначил{% ifequal order 'author'%}{% ifequal dir 'asc'%}&uarr;{% else %}&darr;{% endifequal%}{% endifequal%}</a></th>
 
-		<th {% ifequal order 'created_at'%} class="active"{% endifequal %} style="text-align:right"><a href="{% url tasks_list %}?order=created_at&dir={% ifequal order 'created_at'%}{% ifequal dir 'asc'%}desc{% else %}asc{% endifequal%}{% else %}desc{% endifequal%}">Дата{% ifequal order 'created_at'%}{% ifequal dir 'asc'%}&uarr;{% else %}&darr;{% endifequal%}{% endifequal%}{% if not order %}&darr;{% endif %}</a>&nbsp;</th>
+		<th {% ifequal order 'created_at'%} class="active"{% endifequal %} style="text-align:right"><a href="{% url 'tasks_list' %}?order=created_at&dir={% ifequal order 'created_at'%}{% ifequal dir 'asc'%}desc{% else %}asc{% endifequal%}{% else %}desc{% endifequal%}">Дата{% ifequal order 'created_at'%}{% ifequal dir 'asc'%}&uarr;{% else %}&darr;{% endifequal%}{% endifequal%}{% if not order %}&darr;{% endif %}</a>&nbsp;</th>
 
-		<th{% ifequal order 'assigned_to'%} class="active"{% endifequal %}><a href="{% url tasks_list %}?order=assigned_to&dir={% ifequal order 'assigned_to'%}{% ifequal dir 'asc'%}desc{% else %}asc{% endifequal%}{% else %}asc{% endifequal%}">Выполняет{% ifequal order 'assigned_to'%}{% ifequal dir 'asc'%}&uarr;{% else %}&darr;{% endifequal%}{% endifequal%}</a></th>
+		<th{% ifequal order 'assigned_to'%} class="active"{% endifequal %}><a href="{% url 'tasks_list' %}?order=assigned_to&dir={% ifequal order 'assigned_to'%}{% ifequal dir 'asc'%}desc{% else %}asc{% endifequal%}{% else %}asc{% endifequal%}">Выполняет{% ifequal order 'assigned_to'%}{% ifequal dir 'asc'%}&uarr;{% else %}&darr;{% endifequal%}{% endifequal%}</a></th>
 		
-		<th{% ifequal order 'deadline'%} class="active"{% endifequal %} style="text-align:right"><a href="{% url tasks_list %}?order=deadline&dir={% ifequal order 'deadline'%}{% ifequal dir 'asc'%}desc{% else %}asc{% endifequal%}{% else %}asc{% endifequal%}">Срок{% ifequal order 'deadline'%}{% ifequal dir 'asc'%}&uarr;{% else %}&darr;{% endifequal%}{% endifequal%}</a>&nbsp;</th>
+		<th{% ifequal order 'deadline'%} class="active"{% endifequal %} style="text-align:right"><a href="{% url 'tasks_list' %}?order=deadline&dir={% ifequal order 'deadline'%}{% ifequal dir 'asc'%}desc{% else %}asc{% endifequal%}{% else %}asc{% endifequal%}">Срок{% ifequal order 'deadline'%}{% ifequal dir 'asc'%}&uarr;{% else %}&darr;{% endifequal%}{% endifequal%}</a>&nbsp;</th>
 
-		<th class="{% ifequal order 'status'%} active{% endifequal %}"><a href="{% url tasks_list %}?order=status&dir={% ifequal order 'status'%}{% ifequal dir 'asc'%}desc{% else %}asc{% endifequal%}{% else %}asc{% endifequal%}">Статус{% ifequal order 'status'%}{% ifequal dir 'asc'%}&uarr;{% else %}&darr;{% endifequal%}{% endifequal%}</a></th>
+		<th class="{% ifequal order 'status'%} active{% endifequal %}"><a href="{% url 'tasks_list' %}?order=status&dir={% ifequal order 'status'%}{% ifequal dir 'asc'%}desc{% else %}asc{% endifequal%}{% else %}asc{% endifequal%}">Статус{% ifequal order 'status'%}{% ifequal dir 'asc'%}&uarr;{% else %}&darr;{% endifequal%}{% endifequal%}</a></th>
 	</tr>
 {% if tasks %}
 {% for t in tasks %}

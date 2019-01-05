@@ -21,7 +21,7 @@ $(document).ready(function(){
 });
 
 function load_users() {
-	$.getJSON("{% url json_project_users %}",{id: $('#id_project :selected').val(), ajax: 'true'}, function(j){
+	$.getJSON("{% url 'json_project_users' %}",{id: $('#id_project :selected').val(), ajax: 'true'}, function(j){
 		$("#loader").show();
 
 		selected_id = {% if add %}{{user.id}}{% else %}{{task.assigned_to.id}}{% endif %}
@@ -48,6 +48,7 @@ function load_users() {
 
 <div class="editformWrapper" style="width:780px;">
 <form method="post" id="editform">
+    {% csrf_token %}
 	<table id="editform_table" cellspacing="0">
 	<tr>
 		<th><label for="id_project"><span class="red">*</span> Проект:</label></th>
@@ -80,7 +81,7 @@ function load_users() {
 	</tr>
 	<tr>
 		<th>&nbsp;</th>
-		<td style="padding-top:15px"><input type="submit" value="Сохранить задачу" class="button" /><a href="{% if add %}{% url tasks_list %}{% else %}{% url task_details task.id %}{% endif %}">отмена</a></td>
+		<td style="padding-top:15px"><input type="submit" value="Сохранить задачу" class="button" /><a href="{% if add %}{% url 'tasks_list' %}{% else %}{% url 'task_details' task.id %}{% endif %}">отмена</a></td>
 	</tr>
 	</table>
 </form>

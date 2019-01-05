@@ -2,4 +2,4 @@
 
 <b>{{a.attached_file.name|attach}}</b><br /><br />
 
-<a href="http://{{host}}{% url task_details t.id %}#files">http://{{host}}{% url task_details t.id %}#files</a>
+<a href="http://{{host}}{% url 'task_details' t.id %}#files">http://{{host}}{% url 'task_details' t.id %}#files</a>

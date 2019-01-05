@@ -35,10 +35,10 @@
 {% endif %}
 
 <div id="task-action">
-<a href="{% url tasks_list %}?project_id={{project.id}}&folder=all" class="bigger"><i>Задачи проекта</i></a>
+<a href="{% url 'tasks_list' %}?project_id={{project.id}}&folder=all" class="bigger"><i>Задачи проекта</i></a>
 ({{project.tasks_count}}{%if project.tasks_active_count%}, <b>{{project.tasks_active_count}}</b>{% endif %})
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<a href="{% url projects_list %}" class="bigger">Назад к списку проектов</a>
+<a href="{% url 'projects_list' %}" class="bigger">Назад к списку проектов</a>
 </div>
 </div>
 

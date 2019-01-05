@@ -7,4 +7,4 @@
 Ответственный: {{ t.assigned_to|username|default:"не назначен" }}<br />
 {% if t.deadline %}Срок: {{ t.deadline|date:"d.m.Y" }}<br />{% else %}<br />{% endif %}
 
-<a href="http://{{host}}{% url task_details t.id %}">http://{{host}}{% url task_details t.id %}</a>
+<a href="http://{{host}}{% url 'task_details' t.id %}">http://{{host}}{% url 'task_details' t.id %}</a>

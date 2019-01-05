@@ -16,6 +16,7 @@ $(document).ready(function(){
 
 <div class="editformWrapper" style="width:800px">
 <form method="post" id="editform">
+    {% csrf_token %}
 	<table id="editform_table" cellspacing="0">
 	<tr>
 		<th><label for="id_title"><span class="red">*</span> Проект:</label></th>
@@ -31,7 +32,7 @@ $(document).ready(function(){
 	</tr>
 	<tr>
 		<th></th>
-		<td style="padding-top:10px"><input type="submit" value="Сохранить" class="button" /><a href="{% if add %}{% url projects_list %}{% else %}{% url project_details project.id %}{% endif %}">отмена</a></td>
+		<td style="padding-top:10px"><input type="submit" value="Сохранить" class="button" /><a href="{% if add %}{% url 'projects_list' %}{% else %}{% url 'project_details' project.id %}{% endif %}">отмена</a></td>
 	</tr>
 	</table>
 </form>

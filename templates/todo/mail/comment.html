@@ -3,4 +3,4 @@
 {{c.message|sanitize}}
 <b>{{c.author|username}}</b>, {{c.created_at|format_date}}<br /><br />
 
-<a href="http://{{host}}{% url task_details t.id %}#comments">http://{{host}}{% url task_details t.id %}#comments</a>
+<a href="http://{{host}}{% url 'task_details' t.id %}#comments">http://{{host}}{% url 'task_details' t.id %}#comments</a>

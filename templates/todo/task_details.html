@@ -13,7 +13,7 @@
 
 <div>
 <b>Проект</b><br />
-<span><a href="{% url project_details task.project.id %}">{{task.project.title}}</a></span>
+<span><a href="{% url 'project_details' task.project.id %}">{{task.project.title}}</a></span>
 </div>
 
 <div class="top-indent">
@@ -71,27 +71,27 @@
 
 {% ifequal task.status.id 1 %}
 	{% ifequal task.assigned_to.id user.id %}
-		<a class="button" href="{% url task_to_accepted task.id %}"><span>Принять</span></a>
+		<a class="button" href="{% url 'task_to_accepted' task.id %}"><span>Принять</span></a>
 	{% else %}&nbsp;{% endifequal %}
 {% endifequal %}
 {% ifequal task.status.id 2 %}
 	{% ifequal task.assigned_to.id user.id %}
-		<a class="button" href="{% url task_to_done task.id %}"><span>Завершить</span></a>
+		<a class="button" href="{% url 'task_to_done' task.id %}"><span>Завершить</span></a>
 	{% else %}&nbsp;{% endifequal %}
 {% endifequal %}
 {% ifequal task.status.id 3 %}
 	{% ifequal task.author.id user.id %}
-		<a class="button" href="{% url task_to_checked task.id %}"><span><b>Одобрить</b></span></a><a class="button" href="{% url task_to_new task.id %}"><span>Открыть&nbsp;заново</span></a>
+		<a class="button" href="{% url 'task_to_checked' task.id %}"><span><b>Одобрить</b></span></a><a class="button" href="{% url 'task_to_new' task.id %}"><span>Открыть&nbsp;заново</span></a>
 	{% else %}&nbsp;{% endifequal %}
 {% endifequal %}
 {% ifequal task.status.id 4 %}
 	{% ifequal task.author.id user.id %}
-		<a class="button" href="{% url task_to_new task.id %}"><span>Открыть&nbsp;заново</span></a>
+		<a class="button" href="{% url 'task_to_new' task.id %}"><span>Открыть&nbsp;заново</span></a>
 	{% else %}&nbsp;{% endifequal %}
 {% endifequal %}
 
 </td>
-<td style="vertical-align:middle;padding-left:50px"><a href="{% url tasks_list %}" class="bigger">Назад к списку задач</a></td>
+<td style="vertical-align:middle;padding-left:50px"><a href="{% url 'tasks_list' %}" class="bigger">Назад к списку задач</a></td>
 </tr></table>
 
 </div>
