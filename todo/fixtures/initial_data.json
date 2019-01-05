@@ -1,0 +1,1 @@
+[{"model": "todo.status", "pk": 1, "fields": {"title": "New"}}, {"model": "todo.status", "pk": 2, "fields": {"title": "Accepted"}}, {"model": "todo.status", "pk": 3, "fields": {"title": "Closed"}}, {"model": "todo.status", "pk": 4, "fields": {"title": "Closed, Approved"}}]

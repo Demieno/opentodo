@@ -83,7 +83,6 @@ DATABASES = {
     }
 }
 
-
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
 
@@ -129,3 +128,14 @@ STATIC_URL = '/static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static', 'uploads')
 
 MEDIA_URL = '/static/uploads/'
+
+
+SEND_EMAILS = False       # make it True and edit settings bellow if you want to receive emails
+EMAIL_HOST = ''           # smtp.myhost.com
+EMAIL_HOST_USER = ''      # user123
+EMAIL_HOST_PASSWORD = ''  # qwerty
+EMAIL_ADDRESS_FROM = ''   # noreply@myhost.com
+if DEBUG:
+    EMAIL_FAIL_SILENTLY = False
+else:
+    EMAIL_FAIL_SILENTLY = True
