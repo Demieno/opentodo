@@ -75,8 +75,8 @@ class Project(models.Model):
     title = models.CharField("Проект", max_length=255)
     info = models.TextField("Описание", null=True, blank=True)
     created_at = models.DateTimeField("Дата добавления", auto_now_add=True)
-    author = models.ForeignKey(User, null=True, db_column='author', related_name="projects", verbose_name="Автор")
-    users = models.ManyToManyField(User, blank=True, null=True, verbose_name="Команда", related_name="avail_projects")
+    author = models.ForeignKey(User, on_delete=models.CASCADE, null=True, db_column='author', related_name="projects", verbose_name="Автор")
+    users = models.ManyToManyField(User, blank=True, verbose_name="Команда", related_name="avail_projects")
     objects = ProjectManager()
 
     def __unicode__(self):
@@ -121,10 +121,10 @@ class Status(models.Model):
 
 # Задачи
 class Task(models.Model):
-    project = models.ForeignKey(Project, verbose_name="Проект", related_name="related_tasks")
-    status = models.ForeignKey(Status, default=1, verbose_name="Статус")
-    author = models.ForeignKey(User, null=True, db_column='author', related_name="tasks", verbose_name="Автор")
-    assigned_to = models.ForeignKey(User, null=True, db_column='assigned_to', related_name="assigned_tasks", verbose_name="Ответственный")
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, verbose_name="Проект", related_name="related_tasks")
+    status = models.ForeignKey(Status, on_delete=models.CASCADE, default=1, verbose_name="Статус")
+    author = models.ForeignKey(User, on_delete=models.CASCADE, null=True, db_column='author', related_name="tasks", verbose_name="Автор")
+    assigned_to = models.ForeignKey(User, on_delete=models.CASCADE, null=True, db_column='assigned_to', related_name="assigned_tasks", verbose_name="Ответственный")
     created_at = models.DateTimeField("Дата добавления", auto_now_add=True)
     title =  models.CharField("Задача", max_length=255)
     info = models.TextField("Описание", null=True, blank=True)
@@ -154,11 +154,11 @@ class Task(models.Model):
         
 # Комментарии к задачам
 class Comment(models.Model):
-    task = models.ForeignKey(Task, related_name="comments")
-    author = models.ForeignKey(User)
+    task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name="comments")
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
     message = models.TextField("Комментарий")
     created_at = models.DateTimeField("Дата", auto_now_add=True)
-    reply_to = models.ForeignKey('self', null=True, blank=True)
+    reply_to = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
     class Meta:
         ordering = ['created_at']
 
@@ -179,7 +179,7 @@ class Comment(models.Model):
 
 # Абстрактный класс для файлов-вложений
 class CommonAttach(models.Model):
-    author = models.ForeignKey(User)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     attached_file = models.FileField(upload_to=make_upload_path)
     class Meta:
@@ -187,11 +187,11 @@ class CommonAttach(models.Model):
 
 # Аттачи к проектам
 class ProjectAttach(CommonAttach):
-    project = models.ForeignKey(Project, related_name="files")
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="files")
 
 # Аттачи к задачам
 class TaskAttach(CommonAttach):
-    task = models.ForeignKey(Task, related_name="files")
+    task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name="files")
 
     # Уведомление по e-mail о прикреплении файла к задаче
     def mail_notify(self, host=''):

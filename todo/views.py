@@ -15,7 +15,7 @@ from django.http import HttpResponse, HttpResponseRedirect, Http404, HttpRequest
 from django.shortcuts import get_object_or_404, get_list_or_404
 from annoying.functions import get_object_or_None
 from annoying.decorators import render_to
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.contrib.auth.models import User
 from django.template import RequestContext, loader
 from django.contrib.auth.decorators import login_required
