@@ -44,14 +44,13 @@ def send_emails(subject, message, recipient_list):
 
 # Генерирует upload path для FileField
 def make_upload_path(instance, filename):
-    upload_path = "uploads"
     if isinstance(instance, ProjectAttach):
         project_id = instance.project.id
-        return u"%s/%s/%s" % (upload_path, project_id, filename)
+        return u"%s/%s" % (project_id, filename)
 
     elif isinstance(instance, TaskAttach):
         project_id = instance.task.project.id
-        return u"%s/%s/tasks/%s" % (upload_path, project_id, filename)
+        return u"%s/tasks/%s" % (project_id, filename)
 
 # Пользователи в проектах
 def users_in_projects(projects):

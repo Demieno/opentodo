@@ -24,6 +24,7 @@ $(document).ready(function(){
 <h1 style="display:inline">Файлы</h1>&nbsp;&nbsp;<a href="#" id="add_file_link" class="do">добавить файл</a><br /><br />
 
 <form method="post" enctype="multipart/form-data" id="attach_form" {% if not f.errors %}style="display:none"{% endif %}>
+{% csrf_token %}
 <div class="editformWrapper" style="margin-bottom:20px; width: 600px">
 <div class="formErrors">
 {% if f.attached_file.errors %}Не выбран файл<br />{% endif %}
