@@ -1,4 +1,6 @@
 # do NOT track Python compilation files
 *.py[cod]
 __python__/*
+__pycache__/
 opentodo.db
+.idea/

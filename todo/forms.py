@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#------------------------------------------------------------
+# ------------------------------------------------------------
 # opentodo (c) 2009 Mikhail Grigoriev <mgrigoriev@gmail.com>
 #
 # This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License
@@ -8,7 +8,7 @@
 # of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 # You should have received a copy of the GNU General Public License along with this program.
 # If not, see <http://www.gnu.org/licenses/>.
-#------------------------------------------------------------
+# ------------------------------------------------------------
 
 from django.forms import ModelForm
 from django import forms
@@ -16,10 +16,12 @@ from todo.models import *
 from django.contrib.auth.models import User
 from todo.templatetags.todo_extras import username
 
+
 class OpentodoModelForm(ModelForm):
     class Media:
-        css = { 'all': ('forms.css',) }
+        css = {'all': ('forms.css',)}
         js = ('jquery.formvalidation.1.1.5.js',)
+
 
 # Форма редактирования проекта
 class ProjectForm(OpentodoModelForm):
@@ -32,9 +34,11 @@ class ProjectForm(OpentodoModelForm):
         self.fields['users'].choices = user_choices
 
     title = forms.CharField(widget=forms.Textarea)
+
     class Meta:
         model = Project
         fields = ('title', 'info', 'users')
+
 
 # Форма редактирования задачи
 class TaskForm(OpentodoModelForm):
@@ -43,18 +47,22 @@ class TaskForm(OpentodoModelForm):
         self.fields['project'].queryset = Project.objects.available_for(user)
 
     title = forms.CharField(widget=forms.Textarea)
+
     class Meta:
         model = Task
         fields = ('project', 'title', 'info', 'deadline')
+
     class Media:
-        css = { 'all': ('ui.datepicker.css',) }
+        css = {'all': ('ui.datepicker.css',)}
         js = ('ui.datepicker.js',)
+
 
 # Форма загрузки файлов для проектов
 class ProjectAttachForm(OpentodoModelForm):
     class Meta:
         model = ProjectAttach
         fields = ('attached_file',)
+
 
 # Форма загрузки файлов для задач
 class TaskAttachForm(OpentodoModelForm):

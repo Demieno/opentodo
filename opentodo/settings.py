@@ -8,6 +8,8 @@ https://docs.djangoproject.com/en/2.1/topics/settings/
 
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.1/ref/settings/
+
+LOGIN_REDIRECT_URL TODO: поменять урл на страницу профиля, на странице профиля собрать сводную инфу
 """
 
 import os
@@ -25,7 +27,9 @@ SECRET_KEY = '2o^l^li+jdrvu4@)$0oydhr0b&&1ljt^e)$rl*s*@97!9$(*9&'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1']
+LOGIN_REDIRECT_URL = 'tasks_list'
+
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -76,12 +80,35 @@ WSGI_APPLICATION = 'opentodo.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
-DATABASES = {
+DATABASES_SQLITE3 = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'opentodo.db'),
     }
 }
+
+DATABASES_MYSQL = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'opentodo',
+        'USER': 'root',
+        'PASSWORD': '',
+        'HOST': '127.0.0.1',
+        'PORT': '',
+    }
+}
+
+DATABASES_PGSQL = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'opentodo',
+        'USER': 'postgres',
+        'HOST': '127.0.0.1',
+        'PASSWORD': 'admin',
+    }
+}
+
+DATABASES = DATABASES_SQLITE3
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
@@ -125,9 +152,9 @@ STATICFILES_DIRS = [
 
 STATIC_URL = '/static/'
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'static', 'uploads')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
 
-MEDIA_URL = '/static/uploads/'
+MEDIA_URL = '/uploads/'
 
 
 SEND_EMAILS = False       # make it True and edit settings bellow if you want to receive emails

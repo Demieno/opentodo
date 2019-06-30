@@ -16,6 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.contrib.staticfiles import views as static_views
+from django.conf.urls.static import static
 from django.urls import re_path, path
 from django.views.static import serve
 from .views import *
@@ -49,7 +50,7 @@ urlpatterns += [
     re_path(r'^projects/delete_attach/(?P<attach_id>\d+)/$', delete_project_attach, name='delete_project_attach'), 
 
     re_path(r'^json/project_users/$', json_project_users, name='json_project_users'), 
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:
     urlpatterns += [

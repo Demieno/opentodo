@@ -1,14 +1,13 @@
 # -*- coding: utf-8 -*-
-#------------------------------------------------------------
+# ------------------------------------------------------------
 # opentodo (c) 2009 Mikhail Grigoriev <mgrigoriev@gmail.com>
 #
-# This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
-# This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
-# of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
-# You should have received a copy of the GNU General Public License along with this program.
-# If not, see <http://www.gnu.org/licenses/>.
-#------------------------------------------------------------
+# This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
+# License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+# later version. This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+# even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public
+# License for more details. You should have received a copy of the GNU General Public License along with this
+# program. If not, see <http://www.gnu.org/licenses/>.
 
 from django.conf import settings
 from django.http import HttpResponse, HttpResponseRedirect, Http404, HttpRequest, HttpResponseForbidden
@@ -23,9 +22,11 @@ from django.core.paginator import Paginator, InvalidPage
 from todo.models import *
 from todo.forms import *
 
+
 @login_required
 def index(request):
     return HttpResponseRedirect(reverse('tasks_list'))
+
 
 # Список задач
 # Доступ: все - видят задачи проектов, участниками которых они являются; администраторы
@@ -35,15 +36,15 @@ def list(request, state=0):
     order = direct = ''
     project = None
     filter_on = False
-    
+
     # Получаем проекты и задачи, к которым есть доступ
     projects = Project.objects.available_for(request.user)
     tasks = Task.objects.filter(project__in=projects)
-    
+
     # Пользователи и статусы задач - для фильтра
     users = users_in_projects(projects)
     states = Status.objects.all()
-    
+
     # Запоминаем в сессии id проекта, если передано в GET
     if request.GET.get('project_id', False):
         try:
@@ -93,10 +94,10 @@ def list(request, state=0):
                     request.session['project_id'] = '0'
                     return HttpResponseRedirect(reverse('tasks_list'))
                 else:
-                    tasks = tasks.filter(project__id = params['project_id'])
+                    tasks = tasks.filter(project__id=params['project_id'])
             except Project.DoesNotExist:
                 request.session['project_id'] = '0'
-    
+
     # Фильтруем по группе
     if params.get('folder', False):
         folder = params['folder']
@@ -109,9 +110,11 @@ def list(request, state=0):
         tasks = tasks.filter(assigned_to=request.user)
     elif folder == 'outbox':
         tasks = tasks.filter(author=request.user)
-    
+
     # Доп. фильтр:
-    if (params.get('author', False) and not folder == 'outbox') or (params.get('assigned_to', False) and not folder == 'inbox') or params.get('status', False) or params.get('search_title', False):
+    if (params.get('author', False) and not folder == 'outbox') or (
+            params.get('assigned_to', False) and not folder == 'inbox') or params.get('status', False) or params.get(
+            'search_title', False):
         filter_on = True
         # Автор
         if params.get('author', False) and not folder == 'outbox':
@@ -128,7 +131,7 @@ def list(request, state=0):
             except ValueError:
                 pass
         # Статус
-        if params.get('status', False):            
+        if params.get('status', False):
             if params['status'] == 'all_active':
                 tasks = tasks.exclude(status__id=3).exclude(status__id=4)
             try:
@@ -190,13 +193,16 @@ def list(request, state=0):
         order = 'created_at'
         direct = 'desc'
         tasks = tasks.order_by('-created_at')
-    
+
     # Разбиение на страницы
     paginator = Paginator(tasks, 100)
     page_num = int(request.GET.get('page', '1'))
     page = paginator.page(page_num)
 
-    return {'tasks': page.object_list, 'page': page, 'paginator': paginator, 'current_page': page_num, 'projects': projects, 'project': project, 'params': params, 'folder': folder, 'order': order, 'dir': direct, 'menu_active': 'tasks', 'users': users, 'states': states, 'filter_on': filter_on}
+    return {'tasks': page.object_list, 'page': page, 'paginator': paginator, 'current_page': page_num,
+            'projects': projects, 'project': project, 'params': params, 'folder': folder, 'order': order, 'dir': direct,
+            'menu_active': 'tasks', 'users': users, 'states': states, 'filter_on': filter_on}
+
 
 # Информация о задаче + загрузка файлов
 # Доступ: участники проекта, администраторы
@@ -216,7 +222,7 @@ def details(request, task_id):
     if request.method == 'POST':
         f = TaskAttachForm(request.POST, request.FILES, instance=task_attach)
         if f.is_valid():
-            attach = f.save(commit = False)
+            attach = f.save(commit=False)
             attach.save()
             attach.mail_notify(request.get_host())
 
@@ -225,6 +231,7 @@ def details(request, task_id):
         f = TaskAttachForm(instance=task_attach)
 
     return {'task': task, 'menu_active': 'tasks', 'attachments': attachments, 'f': f}
+
 
 # Редактирование задачи
 # Доступ: автор задачи, администраторы
@@ -241,9 +248,9 @@ def edit(request, task_id):
         return HttpResponseForbidden()
 
     if request.method == 'POST':
-        f = TaskForm(request.user, request.POST, instance = task)
+        f = TaskForm(request.user, request.POST, instance=task)
         if f.is_valid():
-            t = f.save(commit = False)
+            t = f.save(commit=False)
             if t.deadline:
                 t.has_deadline = True
             else:
@@ -257,12 +264,13 @@ def edit(request, task_id):
             t.save()
             return HttpResponseRedirect(reverse('task_details', args=(task_id,)))
     else:
-        f = TaskForm(request.user, instance = task)
-    
+        f = TaskForm(request.user, instance=task)
+
     projects = Project.objects.available_for(request.user)
     users = users_in_projects(projects)
 
     return {'form': f, 'task': task, 'users': users, 'menu_active': 'tasks'}
+
 
 # Добавление задачи
 # Доступ: участники проекта, администраторы
@@ -279,7 +287,7 @@ def add_task(request):
             if not f.cleaned_data['project'].is_avail(request.user):
                 return HttpResponseForbidden()
 
-            t = f.save(commit = False)
+            t = f.save(commit=False)
             if t.deadline:
                 t.has_deadline = True
             t.author = request.user
@@ -290,17 +298,18 @@ def add_task(request):
                 t.assigned_to = User.objects.get(pk=assigned_to_id)
                 t.save()
                 t.mail_notify(request.get_host())
-            
+
             return HttpResponseRedirect(reverse('task_details', args=(t.id,)))
-    else:        
+    else:
         init_data = {
-            'project': request.session.get('project_id',''),
+            'project': request.session.get('project_id', ''),
         }
         f = TaskForm(request.user, initial=init_data)
-    
+
     users = users_in_projects(projects)
 
     return {'form': f, 'add': True, 'users': users, 'menu_active': 'tasks'}
+
 
 # Удаление задачи
 # Доступ: автор задачи, администраторы
@@ -318,6 +327,7 @@ def delete(request, task_id):
     task.delete()
     return HttpResponseRedirect(reverse('tasks_list'))
 
+
 # Список проектов
 # Доступ: все - видят проекты, в которых участвуют; администраторы
 @login_required
@@ -325,6 +335,7 @@ def delete(request, task_id):
 def projects_list(request, state=0):
     projects = Project.objects.available_for(request.user)
     return {'projects': projects, 'menu_active': 'projects'}
+
 
 # Информация о проекте + загрузка файлов
 # Доступ: участники проекта, администраторы
@@ -338,19 +349,20 @@ def project_details(request, project_id):
 
     # Список файлов
     attachments = ProjectAttach.objects.filter(project=project).order_by('-id')
-    
+
     # Загрузка файлов
     project_attach = ProjectAttach(project=project, author=request.user)
     if request.method == 'POST':
         f = ProjectAttachForm(request.POST, request.FILES, instance=project_attach)
         if f.is_valid():
-            attach = f.save(commit = False)
+            attach = f.save(commit=False)
             attach.save()
             return HttpResponseRedirect(reverse('project_details', args=(project_id,)))
     else:
         f = ProjectAttachForm(instance=project_attach)
 
-    return {'project':project, 'menu_active':'projects', 'attachments':attachments, 'f':f}
+    return {'project': project, 'menu_active': 'projects', 'attachments': attachments, 'f': f}
+
 
 # Удаление файла, прикрепленного к проекту
 # Доступ: автор файла, администраторы
@@ -367,7 +379,7 @@ def delete_project_attach(request, attach_id):
 
     attach.delete()
     return HttpResponseRedirect(reverse('project_details', args=(attach.project.id,)))
-    
+
 
 # Удаление файла, прикрепленного к задаче
 # Доступ: автор файла, администраторы
@@ -385,6 +397,7 @@ def delete_task_attach(request, attach_id):
     attach.delete()
     return HttpResponseRedirect(reverse('task_details', args=(attach.task.id,)))
 
+
 # Добавление проекта
 # Доступ: администраторы
 @login_required
@@ -396,15 +409,16 @@ def add_project(request):
     if request.method == 'POST':
         f = ProjectForm(request.POST)
         if f.is_valid():
-            prj = f.save(commit = False)
+            prj = f.save(commit=False)
             prj.author = request.user
-            prj.save()            
+            prj.save()
             f.save_m2m()
             return HttpResponseRedirect(reverse('projects_list'))
     else:
         f = ProjectForm()
-    
+
     return {'form': f, 'add': True, 'menu_active': 'projects'}
+
 
 # Редактирование проекта
 # Доступ: администраторы
@@ -417,16 +431,17 @@ def edit_project(request, project_id):
         return HttpResponseForbidden()
 
     if request.method == 'POST':
-        f = ProjectForm(request.POST, instance = project)
+        f = ProjectForm(request.POST, instance=project)
         if f.is_valid():
-            p = f.save(commit = False)
+            p = f.save(commit=False)
             p.save()
             f.save_m2m()
             return HttpResponseRedirect(reverse('project_details', args=(project_id,)))
     else:
-        f = ProjectForm(instance = project)
+        f = ProjectForm(instance=project)
 
     return {'form': f, 'project': project, 'menu_active': 'projects'}
+
 
 # Удаление проекта
 # Доступ: администраторы
@@ -448,6 +463,7 @@ def delete_project(request, project_id):
         project.delete()
         return HttpResponseRedirect(reverse('projects_list'))
 
+
 # Принять задачу
 # Доступ: assigned_to (тот, кому назначена задача)
 @login_required
@@ -460,9 +476,10 @@ def task_to_accepted(request, task_id):
 
     task.status = Status.objects.get(pk=2)
     task.save()
-    task.mail_notify(request.get_host())    
+    task.mail_notify(request.get_host())
 
     return HttpResponseRedirect(reverse('task_details', args=(task_id,)))
+
 
 # Завершить задачу
 # Доступ: assigned_to (тот, кому назначена задача)
@@ -480,6 +497,7 @@ def task_to_done(request, task_id):
 
     return HttpResponseRedirect(reverse('task_details', args=(task_id,)))
 
+
 # Подтвердить завершение задачи (контроль)
 # Доступ: author (тот, кто назначил)
 @login_required
@@ -496,6 +514,7 @@ def task_to_checked(request, task_id):
 
     return HttpResponseRedirect(reverse('task_details', args=(task_id,)))
 
+
 # Открыть заново задачу
 # Доступ: author (тот, кто назначил)
 @login_required
@@ -510,6 +529,7 @@ def task_to_new(request, task_id):
     task.save()
     task.mail_notify(request.get_host(), True)
     return HttpResponseRedirect(reverse('task_details', args=(task_id,)))
+
 
 # Добавление комментария к задаче
 # Доступ: участники проекта
@@ -537,12 +557,13 @@ def add_comment(request, task_id):
 
     return HttpResponseRedirect(reverse('task_details', args=(task_id,)) + '#comment_form')
 
+
 # Удаление комментария к задаче
 # Доступ: автор комментария
 @login_required
 def del_comment(request, comment_id):
     comment = get_object_or_404(Comment, pk=comment_id)
- 
+
     author = get_object_or_None(User, id=comment.author_id)
     if not comment.task.project.is_avail(request.user):
         return HttpResponseForbidden()
@@ -551,6 +572,7 @@ def del_comment(request, comment_id):
         return HttpResponseForbidden()
     comment.delete()
     return HttpResponseRedirect(reverse('task_details', args=(comment.task.id,)))
+
 
 # Список пользователей, имеющих доступ к проекту, в формате JSON
 # Используется в форме задачи, подгружается в поле 'Ответственный' при выборе проекта.
@@ -569,6 +591,7 @@ def json_project_users(request):
 
     users = users_in_projects(projects)
     return {'users': users}
+
 
 # Отображение страницы 403 Forbidden - доступ запрещен
 @login_required
